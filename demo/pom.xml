@@ -10,6 +10,7 @@
         <module>quartz</module>
         <module>activiti</module>
         <module>activiti_test</module>
+        <module>zookeeper</module>
 
     </modules>
     <parent>
