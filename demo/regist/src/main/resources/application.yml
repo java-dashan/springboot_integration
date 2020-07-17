@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: regist
+eureka:
+  client:
+    fetch-registry: false
+    registerWithEureka: false
+server:
+  port: 10086

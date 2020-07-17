@@ -1,0 +1,29 @@
+server:
+  port: 7001
+spring:
+  application:
+    name: redis
+  redis:
+    host: localhost
+    port: 6379
+    jedis:
+      pool:
+        max-active: 100
+        max-wait: 30000
+        max-idle: 20   #最大空闲连接数
+        min-idle: 0
+        timeout: 3000
+
+  devtools:
+    restart:
+      enabled: true  #设置开启热部署
+#  freemarker:
+#    cache: false    #页面不加载缓存，修改即时生效
+eureka:
+  instance:
+    instance-id: redis-7001
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:10086/eureka/
+

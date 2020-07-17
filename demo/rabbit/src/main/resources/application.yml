@@ -1,0 +1,27 @@
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        acknowledge-mode: manual #手动应答
+        concurrency: 1     #最小消费者数量
+        max-concurrency: 1 #最大消费者并发数
+        retry:
+          enabled: true  #是否支持重试
+
+    publisher-returns: true
+    publisher-confirm-type: correlated
+  application:
+    name: rabbit
+eureka:
+  instance:
+    instance-id: rabbit-8002
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:10086/eureka/
+server:
+  port: 8002

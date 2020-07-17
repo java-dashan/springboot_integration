@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/huazhi_demo?serverTimezone=GMT%2B8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: dashan
+  application:
+    name: ehcache
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+eureka:
+  instance:
+#    hostname: localhost
+    instance-id: ehcache-9001 #自定义服务名称信息
+    prefer-ip-address: true     #访问路径可以显示IP地址
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:10086/eureka/
+server:
+  port: 9001
