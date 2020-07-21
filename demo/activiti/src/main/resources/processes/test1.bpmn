@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+  <process id="test_key" name="test" isExecutable="true">
+    <documentation>测试流程图</documentation>
+    <startEvent id="start" name="开始"></startEvent>
+    <userTask id="_2" name="填写请假申请" activiti:assignee="admin">
+      <extensionElements>
+        <activiti:formProperty id="liyou" name="理由" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="buchong" name="补充" type="string"></activiti:formProperty>
+        <activiti:formProperty id="condition" name="条件" type="string" required="true"></activiti:formProperty>
+        <modeler:initiator-can-complete xmlns:modeler="http://activiti.com/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="_3flow" name="路由">
+      <documentation>条件</documentation>
+    </exclusiveGateway>
+    <sequenceFlow id="sid-86493352-310A-4E4C-A821-456AE9216DF2" sourceRef="start" targetRef="_2"></sequenceFlow>
+    <sequenceFlow id="sid-91BC2F6B-3169-4D30-BA1E-8451E9A1A151" sourceRef="_2" targetRef="_3flow"></sequenceFlow>
+    <userTask id="_4jinglishenpi" name="经理审批" activiti:candidateGroups="经理组">
+      <extensionElements>
+        <activiti:formProperty id="approve" name="同意" type="boolean"></activiti:formProperty>
+        <activiti:formProperty id="refuse" name="拒绝" type="boolean"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <userTask id="_4zongjianshenpi" name="总监审批" activiti:candidateGroups="总监组">
+      <extensionElements>
+        <activiti:formProperty id="approve" name="同意" type="boolean"></activiti:formProperty>
+        <activiti:formProperty id="refuse" name="拒绝" type="boolean"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <userTask id="_5relishenpi" name="人力资源审批" activiti:candidateGroups="人力资源组">
+      <extensionElements>
+        <activiti:formProperty id="approve" name="同意" type="boolean"></activiti:formProperty>
+        <activiti:formProperty id="refuse" name="拒绝" type="boolean"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="sid-34E47B68-6696-4770-9C6D-4515BDD037A1" sourceRef="_4jinglishenpi" targetRef="_5relishenpi"></sequenceFlow>
+    <sequenceFlow id="sid-1AE85B78-E3AE-4236-8144-AC78686E7C1D" sourceRef="_4zongjianshenpi" targetRef="_5relishenpi"></sequenceFlow>
+    <endEvent id="end" name="结束"></endEvent>
+    <sequenceFlow id="sid-1E727A9A-ABB3-46FF-BCD4-28455AB806DA" sourceRef="_5relishenpi" targetRef="end"></sequenceFlow>
+    <sequenceFlow id="_3flow1" name="flow1" sourceRef="_3flow" targetRef="_4jinglishenpi">
+      <documentation>flow1</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${execution.get("condition")<3}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_3flow2" name="flow2" sourceRef="_3flow" targetRef="_4zongjianshenpi">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${execution.get("condition")>=3}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_test_key">
+    <bpmndi:BPMNPlane bpmnElement="test_key" id="BPMNPlane_test_key">
+      <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+        <omgdc:Bounds height="30.0" width="30.0" x="90.0" y="135.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" id="BPMNShape__2">
+        <omgdc:Bounds height="80.0" width="100.0" x="225.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3flow" id="BPMNShape__3flow">
+        <omgdc:Bounds height="40.0" width="40.0" x="405.0" y="135.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4jinglishenpi" id="BPMNShape__4jinglishenpi">
+        <omgdc:Bounds height="80.0" width="100.0" x="510.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4zongjianshenpi" id="BPMNShape__4zongjianshenpi">
+        <omgdc:Bounds height="80.0" width="100.0" x="510.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5relishenpi" id="BPMNShape__5relishenpi">
+        <omgdc:Bounds height="80.0" width="100.0" x="705.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end" id="BPMNShape_end">
+        <omgdc:Bounds height="28.0" width="28.0" x="960.0" y="150.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_3flow2" id="BPMNEdge__3flow2">
+        <omgdi:waypoint x="436.6593886462882" y="163.34061135371178"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="214.86988847583643"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-86493352-310A-4E4C-A821-456AE9216DF2" id="BPMNEdge_sid-86493352-310A-4E4C-A821-456AE9216DF2">
+        <omgdi:waypoint x="120.0" y="150.0"></omgdi:waypoint>
+        <omgdi:waypoint x="172.5" y="150.0"></omgdi:waypoint>
+        <omgdi:waypoint x="172.5" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="225.0" y="160.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-91BC2F6B-3169-4D30-BA1E-8451E9A1A151" id="BPMNEdge_sid-91BC2F6B-3169-4D30-BA1E-8451E9A1A151">
+        <omgdi:waypoint x="325.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="365.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="365.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="155.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-34E47B68-6696-4770-9C6D-4515BDD037A1" id="BPMNEdge_sid-34E47B68-6696-4770-9C6D-4515BDD037A1">
+        <omgdi:waypoint x="610.0" y="100.82191780821918"></omgdi:waypoint>
+        <omgdi:waypoint x="705.0" y="159.3835616438356"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-1E727A9A-ABB3-46FF-BCD4-28455AB806DA" id="BPMNEdge_sid-1E727A9A-ABB3-46FF-BCD4-28455AB806DA">
+        <omgdi:waypoint x="805.0" y="160.91324200913243"></omgdi:waypoint>
+        <omgdi:waypoint x="960.0023346465882" y="163.74433487938973"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-1AE85B78-E3AE-4236-8144-AC78686E7C1D" id="BPMNEdge_sid-1AE85B78-E3AE-4236-8144-AC78686E7C1D">
+        <omgdi:waypoint x="610.0" y="219.17808219178082"></omgdi:waypoint>
+        <omgdi:waypoint x="705.0" y="160.6164383561644"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_3flow1" id="BPMNEdge__3flow1">
+        <omgdi:waypoint x="437.72727272727275" y="147.72727272727272"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="101.78438661710037"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
