@@ -12,6 +12,8 @@
         <module>activiti_test</module>
         <module>zookeeper</module>
         <module>activiti</module>
+        <module>ureport</module>
+        <module>kettle</module>
 
     </modules>
     <parent>

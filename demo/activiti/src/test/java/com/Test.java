@@ -1,6 +1,7 @@
 package com;
 
 import org.activiti.engine.*;
+import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.Deployment;
@@ -177,5 +178,47 @@ public class Test {
         identityService.createMembership("dashan2", "group2");
     }
 
+
+
+    /**
+     * 启动流程
+     */
+    @org.junit.jupiter.api.Test
+    void contextLoads() {
+//        Person person = new Person();
+//        person.setName("da");
+//        person.setId(1);
+////        ObjectMapper objectMapper = new ObjectMapper();
+//
+//        ProcessInstance apply = runtimeService.startProcessInstanceByKey("a", person.toString());
+//        System.out.println(apply.getProcessDefinitionId());
+//        System.out.println(apply.getBusinessKey());
+//        System.out.println(apply.getProcessDefinitionKey());
+//        System.out.println(apply.getProcessInstanceId());
+
+    }
+    /**
+     * 查询任务
+     */
+    @org.junit.jupiter.api.Test
+    public void task1(){
+        List<Task> manager = taskService.createTaskQuery().taskAssignee("").list();
+        System.out.println(manager);
+
+    }
+
+    /**
+     * 查看下一个任务
+     */
+    @org.junit.jupiter.api.Test
+    public void nextTask(){
+        HistoricActivityInstance a = historyService.createHistoricActivityInstanceQuery().processInstanceId("a").unfinished().singleResult();
+//        System.out.println(a.getActivityName());
+        if (a == null) {
+            System.out.println("该流程已完成");
+        }else {
+            System.out.println(a.getActivityName());
+        }
+    }
 
 }

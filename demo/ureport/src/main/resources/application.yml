@@ -1,0 +1,6 @@
+logback:
+  logPath: /ureport/log
+  level: INFO
+
+server:
+  port: 9999
