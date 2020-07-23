@@ -12,6 +12,8 @@
         <module>zookeeper</module>
         <module>ureport</module>
         <module>kettle</module>
+        <module>poi</module>
+        <module>kafka</module>
 
     </modules>
     <parent>

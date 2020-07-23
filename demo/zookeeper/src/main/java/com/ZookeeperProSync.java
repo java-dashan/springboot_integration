@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class ZookeeperProSync implements Watcher {
+    // 设置为1,一个准备好就直接触发
     private static CountDownLatch latch = new CountDownLatch(1);
     private static ZooKeeper zk = null;
     private static Stat stat = new Stat();
