@@ -1,0 +1,11 @@
+
+1.注册ureport.servlet
+ServletRegistrationBean regist = new ServletRegistrationBean(new UReportServket(),"/ureport/**");
+
+2.编写application.properties
+
+3.编写context.xml
+
+4.@Import("classpath:context.xml")
+
+5.实现BuildinDatasource接口,并将其作为bean注册到spring容器

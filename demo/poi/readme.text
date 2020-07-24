@@ -1,0 +1,40 @@
+
+
+1.Workbook接口 实例: HSSFWorkbook、XSSFWorkbook
+
+2.Sheet
+
+3.Row
+
+4.Cell 需进行判断
+    private static String convertCellValueToString(Cell cell) {
+            if(cell==null){
+                return null;
+            }
+            String returnValue = null;
+            switch (cell.getCellType()) {
+                case NUMERIC:   //数字
+                    Double doubleValue = cell.getNumericCellValue();
+                    // 格式化科学计数法，取一位整数
+                    DecimalFormat df = new DecimalFormat("0");
+                    returnValue = df.format(doubleValue);
+                    break;
+                case STRING:    //字符串
+                    returnValue = cell.getStringCellValue();
+                    break;
+                case BOOLEAN:   //布尔
+                    Boolean booleanValue = cell.getBooleanCellValue();
+                    returnValue = booleanValue.toString();
+                    break;
+                case BLANK:     // 空值
+                    break;
+                case FORMULA:   // 公式
+                    returnValue = cell.getCellFormula();
+                    break;
+                case ERROR:     // 故障
+                    break;
+                default:
+                    break;
+            }
+            return returnValue;
+        }

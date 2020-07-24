@@ -117,7 +117,6 @@ public class FileReader {
         switch (cell.getCellType()) {
             case NUMERIC:   //数字
                 Double doubleValue = cell.getNumericCellValue();
-
                 // 格式化科学计数法，取一位整数
                 DecimalFormat df = new DecimalFormat("0");
                 returnValue = df.format(doubleValue);

@@ -20,3 +20,5 @@ public class MyListener implements TaskListener {
         delegateTask.setAssignee("dashan");
     }
 }
+
+bpmn图可以使用 Activiti-app 开源程序进行绘制

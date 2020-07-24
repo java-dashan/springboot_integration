@@ -1,0 +1,12 @@
+1.pom.xml 引入依赖
+2.application.yml 配置kafka属性
+3.编写produce生产者
+4.编写consumer消费者
+
+
+需要注意的几个类:
+    KafkaTemplate #send("topicName",message)
+
+    @KafkaListener(topics = {topicName})
+
+    ConsumerRecord 可以获取message

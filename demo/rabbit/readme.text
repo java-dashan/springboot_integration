@@ -1,0 +1,19 @@
+produce
+   |
+   v
+exchange
+   | routing key
+   v
+ queue
+   |
+   v
+consumer
+
+RabbitTemplate
+
+@RabbitListener
+public void OnMessage(Channel channel,Message message)
+
+如需要ack确认消息,需要配置 RabbitConfig
+
+

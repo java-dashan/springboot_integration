@@ -1,0 +1,16 @@
+1.pom.xml 引入依赖
+
+2.ehcache.xml 配置缓存策略  注@Cacheable("") 中缓存名称必须在缓存策略中存在
+
+3.配置EhcaheConfig   注册EhCacheManagerFactoryBean ,EhcacheManager 到容器中
+
+4.使用@Cacheable(value={"users"}, key="#user.id", condition="#user.id%2==0")
+     @CacheEvict 
+     @CachePut 进行缓存操作
+
+5.@CacheConfig(cacheNames="enterprise")//<!-- 标记在类上,声明缓存使用的缓存名称 -->
+
+6.@CacheEvict(value="users", allEntries=true, beforeInvocation=true)
+allEntries是boolean类型，表示是否需要清除缓存中的所有元素。默认为false，表示不需要。当指定了allEntries为true时，Spring Cache将忽略指定的key。有的时候我们需要Cache一下清除所有的元素，这比一个一个清除元素更有效率。
+清除操作默认是在对应方法成功执行之后触发的，即方法如果因为抛出异常而未能成功返回时也不会触发清除操作。使用beforeInvocation可以改变触发清除操作的时间，当我们指定该属性值为true时，Spring会在调用该方法之前清除缓存中的指定元素。
+
