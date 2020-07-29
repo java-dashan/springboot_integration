@@ -1,4 +1,4 @@
-1. 关于文件下载前端无法生成下载文件
+1. 关于文件下载前端无法生成下载文件  (无论使用ajax,还是axios都得这么做)
     1.使用 window.location.href = "下载地址"
     2.后端response头设置
             response.reset(); //重置response头信息
