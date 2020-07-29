@@ -1,0 +1,6 @@
+eureka:
+  instance:
+    instance-id: gateway:${server.port}
+  client:
+    service-url:
+      defaultZone: http://localhost:10086/eureka
