@@ -1,0 +1,30 @@
+1. 关于文件下载前端无法生成下载文件
+    1.使用 window.location.href = "下载地址"
+    2.后端response头设置
+            response.reset(); //重置response头信息
+            response.setHeader("Content-Disposition", "attachment; filename="+filename);
+            response.addHeader("Content-Length", "" + data.length);
+            response.setContentType("application/octet-stream; charset=UTF-8");
+            // 下载类型具体改成什么参照: https://blog.csdn.net/asd54090/article/details/80920564
+2.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
