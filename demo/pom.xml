@@ -14,7 +14,7 @@
         <module>kettle</module>
         <module>poi</module>
         <module>kafka</module>
-
+        <module>eureka-client</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

@@ -1,0 +1,34 @@
+#server:
+#  port: 8001
+spring:
+  application:
+    name: eureka-client
+eureka:
+  instance:
+#    ip-address: http://127.0.0.1:8001
+    instance-id: eureka-client${server.port}
+    prefer-ip-address: true
+    home-page-url: /
+
+  client:
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:10086/eureka
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: refresh,health,info
+
+#  #暴露所有端点 默认是info,health
+#  management.endpoints.web.exposure.include=*
+#  #修改访问路径  2.0之前默认是/   2.0默认是 /actuator  可以通过这个属性值修改
+#  management.endpoints.web.base-path=/monitor
+#  #是否启用 health 端点
+#  management.endpoint.health.enabled=true
+#  #显示健康具体信息  默认不会显示详细信息
+#  management.endpoint.health.show-details=always
+#  #shutdown端点可以用来远程关闭应用，此端点默认是关闭的，如果使用的话，需要开启
+#  #请使用 POST请求
+#  management.endpoint.shutdown.enabled = true
+
