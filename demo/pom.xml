@@ -16,6 +16,7 @@
         <module>kafka</module>
         <module>eureka-client</module>
         <module>gateway</module>
+        <module>spring</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
