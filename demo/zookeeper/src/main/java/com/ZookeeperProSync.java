@@ -17,15 +17,16 @@ public class ZookeeperProSync implements Watcher {
         //zookeeper配置数据存储路径
         String path = "/zkPro";
         try {
-            zk = new ZooKeeper("192.168.40.129:2181", 500, new ZookeeperProSync());
+            zk = new ZooKeeper("192.168.40.138:2181", 500, new ZookeeperProSync());
             //等待zk连接成功的通知
             latch.await();
             System.out.println("zookeeper connection success");
-            //获取节点数据
-            System.out.println(new String(zk.getData(path, false, stat)));
-            //获取所有节点
-            List<String> children = zk.getChildren("/", false);
-            System.out.println(children);
+            zk.create(path, "cacacacaca".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+//            //获取节点数据
+//            System.out.println(new String(zk.getData(path, false, stat)));
+//            //获取所有节点
+//            List<String> children = zk.getChildren("/", false);
+//            System.out.println(children);
 
             //获取状态
             System.out.println(zk.getState());

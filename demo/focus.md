@@ -6,6 +6,7 @@
             response.addHeader("Content-Length", "" + data.length);
             response.setContentType("application/octet-stream; charset=UTF-8");
             // 下载类型具体改成什么参照: https://blog.csdn.net/asd54090/article/details/80920564
+                
 
 2. 时间格式化:
     1.自定义类 CustomDateSerializer 继承com.fasterxml.jackson.databind.JsonSerializer,实现方法

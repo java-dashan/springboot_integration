@@ -71,4 +71,16 @@ public class MyAspect {
         }
         return null;
     }
+
+    //配置后置返回通知,使用在方法aspect()上注册的切入点
+    @AfterReturning("aspect()")
+    public void afterReturn(JoinPoint joinPoint) {
+        System.out.println("afterReturn");
+    }
+
+    //配置抛出异常后通知,使用在方法aspect()上注册的切入点
+    @AfterThrowing(pointcut = "aspect()", throwing = "ex")
+    public void afterThrow(JoinPoint joinPoint, Exception ex) {
+        System.out.println("afterThrow");
+    }
 }

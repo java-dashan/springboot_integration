@@ -10,3 +10,136 @@
     @KafkaListener(topics = {topicName})
 
     ConsumerRecord 可以获取message
+
+
+
+
+
+
+
+
+
+linux 安装kafka
+win10 ubuntu本地目录:C:\Users\hez\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc
+                    \LocalState\rootfs\home\dashan
+远程上传文件到linux:
+    scp -r /aaa root@192.168.40.137:/usr/local    上传aaa到/usr/local目录下面
+
+参考文章:https://www.cnblogs.com/expiator/p/9990171.html
+修改config/server.properties
+listeners=PLAINTEXT://0.0.0.0:9092
+advertised.listeners=PLAINTEXT://kafka本机ip:9092
+
+1.启动zookerper
+  启动zk有两种方式，第一种是使用kafka自己带的一个zk。
+  bin/zookeeper-server-start.sh  config/zookeeper.properties
+  另一种是使用其它的zookeeper，可以位于本机也可以位于其它地址。
+  这种情况需要修改config下面的sercer.properties里面的zookeeper地址 。例如zookeeper.connect=192.168.213.11:2181
+  成功启动zookeeper后才可以启动kafka。
+
+  启动kafka
+  bin/kafka-server-start.sh config/server.properties
+
+
+1.topic 数据主题 -- 流式记录
+    是数据记录发布得地方,可以区分业务系统。topics总是多订阅模式,一个topic支持一个或者多个consumer订阅。
+    每个topic kafka集群都会维护一个分区日志。
+    每个分区都是有序且顺序不可更改的记录集,并且不断追加到commit log文件。分区中每个记录都会分配一个唯一id号来表示顺序,我们称之为offset。
+    每个消费者都保存偏移量,即分区log的位置。消费者通过控制偏移量大小可处理任何时段的数据。通常消费完数据offset会以线性增长。
+    日志中的 partition（分区）有以下几个用途。第一，当日志大小超过了单台服务器的限制，允许日志进行扩展。每个单独的分区都必须受限于主机的文件限制，
+        不过一个主题可能有多个分区，因此可以处理无限量的数据。第二，可以作为并行的单元集—关于这一点
+
+    分布式
+    日志的分区partition （分布）在Kafka集群的服务器上。每个服务器在处理数据和请求时，共享这些分区。每一个分区都会在已配置的服务器上进行备份，确保容错性.
+    每个分区都有一台 server 作为 “leader”，零台或者多台server作为 follwers 。leader server 处理一切对 partition （分区）的读写请求，
+        而follwers只需被动的同步leader上的数据。当leader宕机了，followers 中的一台服务器会自动成为新的 leader。每台 server 都会成为某些分区的
+        leader 和某些分区的 follower，因此集群的负载是平衡的。
+
+    生产者
+    生产者可以将数据发布到所选择的topic（主题）中。生产者负责将记录分配到topic的哪一个 partition（分区）中。
+        可以使用循环的方式来简单地实现负载均衡，也可以根据某些语义分区函数(例如：记录中的key)来完成。下面会介绍更多关于分区的使用。
+
+    消费者
+
+
+               message         1:n           广播                        partition
+    producer ----------> topic/partition ----------->  consumer group  -----------> consumer
+
+命令行使用:
+    创建topic: bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+    查看所有topic: bin/kafka-topic.sh --list --zookeeper localhost:2181
+    您也可将代理配置为：在发布的topic不存在时，自动创建topic，而不是手动创建。
+
+    生产消息:   bin/kafka-console-produce.sh --broker-list localhost:2181 --topic test
+              >aaa
+
+    消费消息:   bin/kafka-console-consumer.sh --bootstrap-server localhost:2181 --topic test --from-beginning
+
+    多代理集群:
+        复制配置文件: cp config/server.properties config/server1.properties
+                    cp config/server.properties config/server2.properties
+
+        修改配置信息:  broker.id属性是集群中每个节点的名称，这一名称是唯一且永久的。我们必须重写端口和日志目录，因为我们在同一台机器上运行这些，我们不希望所有的代理尝试在同一个端口注册，或者覆盖彼此的数据。
+
+                    vim config/server1.properties
+                        broker.id=1
+                        listeners=PLAINTEXT://:9093
+                        log.dir=/tmp/kafka-logs-1
+                    vim config/server2.properties
+                        broker.id=2
+                        listeners=PLAINTEXT://:9094
+                        log.dir=/tmp/kafka-logs-2
+        启动两个新节点:
+                    bin/kafka-server-start.sh config/server1.properties &
+                    bin/kafka-server-start.sh config/server2.properties &
+        创建新的topic:
+                    bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 --partitions 1 --topic newTopic
+
+        查看topic 集群信息:
+                    bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic newTopic
+
+为什么kafka性能那么高:
+    1.顺序写入600MB/秒   (随机写入的性能仅约为100k/秒)
+    2.缓存              通过自动访问所有空闲内存将可用缓存的容量至少翻倍
+    3.持久化队列可以建立在简单的读取和向文件后追加两种操作之上,这和日志解决方案相同。这种架构的优点在于所有的操作复杂度都是O(1)，而且读操作不会阻塞写操作,读操作之间
+    也不会互相影响。这有着明显的性能优势 (消息系统使用的持久化数据结构通常是和 BTree 相关联的消费者队列或者其他用于存储消息源数据的通用随机访问数据结构。虽然 BTree
+    的操作复杂度是 O(log N)，但成本也相当高。磁盘寻址是每10ms一跳，并且每个磁盘同时只能执行一次寻址，因此并行性受到了限制。 因此即使是少量的磁盘寻址也会很高的开销。)
+    4.大量的小型 I/O 操作，我们的协议是建立在一个 “消息块” 的抽象基础上，合理将消息分组。 这使得网络请求将多个消息打包成一组，而不是每次发送一条消息，从而使整组消息分担网络中往返的开销。
+    5.以及过多的字节拷贝。
+        数据从文件到套接字的常见数据传输路径:
+            操作系统从磁盘读取数据到内核空间的 pagecache
+            应用程序读取内核空间的数据到用户空间的缓冲区
+            应用程序将数据(用户空间的缓冲区)写回内核空间到套接字缓冲区(内核空间)
+            操作系统将数据从套接字缓冲区(内核空间)复制到通过网络发送的 NIC 缓冲区
+        这显然是低效的，有四次 copy 操作和两次系统调用。使用 sendfile 方法，可以允许操作系统将数据从 pagecache 直接发送到网络，这样避免重新复制数据。所以这种优化方式，只需要最后一步的copy操作，将数据复制到 NIC 缓冲区。
+
+    6.端到端的批量压缩:数据传输的瓶颈不是 CPU ，也不是磁盘，而是网络带宽。高性能的压缩是一次压缩多个消息，而不是压缩单个消息。Kafka 以高效的批处理格式支持一批
+    消息可以压缩在一起发送到服务器。这批消息将以压缩格式写入，并且在日志中保持压缩，只会在 consumer 消费时解压缩。
+
+    7.consumer控制消费情况的优点:
+        传统方式:
+            大多数消息系统都在broker上保存被消费消息的元数据。当消息被传递到consumer,broker将消息标记为consumed,立即删除。优点是保持较小的数据量,缺点是可能导致消息丢失(consumer崩溃,请求超时,或者其他原因)。
+        为解决上述问题,增加了消息确认机制:当消息被发送出去,标记为sent,等待consumer的确认。再将消息标记为consumed。该方案产生新的问题,一:如确认返回时发生错误,会导致消息被消费两次;二:在性能上broker必须为每条消息保存
+        多个状态(首先对其枷锁,确保该消息只被发送一次,然后将其永久的标记为consumed，以便将其移除);三:消息已经发送但一直得不到确认。
+        kafka:
+        Kafka的 topic 被分割成了一组完全有序的 partition，其中每一个 partition 在任意给定的时间内只能被每个订阅了这个 topic 的 consumer 组中的一个 consumer 消费。这意味着 partition 中 每一个 consumer
+        的位置仅仅是一个数字，即下一条要消费的消息的offset。这使得被消费的消息的状态信息相当少，每个 partition 只需要一个数字。这个状态信息还可以作为周期性的 checkpoint。这以非常低的代价实现了和消息确认机制等同的效果。
+        这种方式还有一个附加的好处。consumer 可以回退到之前的 offset 来再次消费之前的数据，这个操作违反了队列的基本原则，但事实证明对大多数 consumer 来说这是一个必不可少的特性。 例如，如果 consumer 的代码有 bug，
+        并且在 bug 被发现前已经有一部分数据被消费了， 那么 consumer 可以在 bug 修复后通过回退到之前的 offset 来再次消费这些数据。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

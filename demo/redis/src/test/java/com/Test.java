@@ -12,6 +12,7 @@ import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RedisApplication.class)
@@ -98,6 +99,20 @@ public class Test {
     public void test6(){
         Object bean = SpringUtils.getBean("redisTemplate",RedisTemplate.class);
         System.out.println(((RedisTemplate) bean).getExpire("hash"));
+    }
+    
+    @org.junit.Test
+    public void test7() {
+        redisTemplate.opsForValue().set("a", "a", 20, TimeUnit.SECONDS);
+        Long a = redisTemplate.getExpire("a", TimeUnit.SECONDS);
+        System.out.println(a);
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Long a1 = redisTemplate.getExpire("a", TimeUnit.SECONDS);
+        System.out.println(a1);
     }
 
 }
