@@ -12,13 +12,23 @@ import java.util.Optional;
 @Slf4j
 public class TestConsumer {
 
-    @KafkaListener(topics = {"json"})
-    public void consumer(ConsumerRecord consumerRecord) {
+//    @KafkaListener(topics = {"json"})
+//    public void consumer(ConsumerRecord consumerRecord) {
+//        Optional<Object> value = Optional.ofNullable(consumerRecord.value());
+//        log.info("接收到消息");
+//        if (value.isPresent()) {
+//            Object o = value.get();
+//            System.out.println("消费消息" + o);
+//        }
+//    }
+
+    @KafkaListener(topics = {"object"})
+    public void consumer1(ConsumerRecord consumerRecord) {
         Optional<Object> value = Optional.ofNullable(consumerRecord.value());
-        log.info("接收到消息");
+        log.info("consumer1接收到消息");
         if (value.isPresent()) {
             Object o = value.get();
-            System.out.println("消费消息" + o);
+            System.out.println("consumer1消费消息" + o);
         }
     }
 }

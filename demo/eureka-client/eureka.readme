@@ -1,0 +1,16 @@
+Eureka配置相关可以参考:
+    EurekaInstanceConfigBean,EurekaClientConfigBean
+
+通过HTTPS与您的应用进行联系，则可以在EurekaInstanceConfig中设置两个标志：
+    eureka.instance.[nonSecurePortEnabled]=[false]
+    eureka.instance.[securePortEnabled]=[true]
+
+Server.port=0 表示端口随机
+
+当注册应用之间存在相互关联时，那么上层应用如何感知下层服务的存在？
+
+
+如果上层应用感知到下层服务，那它是如何同步下层服务信息？
+
+
+如果应用需要实时同步信息，那么如何确保一致性？

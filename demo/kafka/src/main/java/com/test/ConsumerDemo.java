@@ -10,7 +10,7 @@ import java.util.Properties;
 public class ConsumerDemo {
     public static void main(String[] args) {
         Properties properties = new Properties();
-        properties.put("bootstrap.servers", "http://192.168.40.129:9092");
+        properties.put("bootstrap.servers", "http://172.16.1.41:9092");
         properties.put("group.id", "group-2");
         //session.timeout.ms：消费者在被认为死亡之前可以与服务器断开连接的时间，默认是3s 。
         properties.put("session.timeout.ms", "30000");
@@ -29,8 +29,9 @@ public class ConsumerDemo {
         // client.id：该参数可以是任意的字符串，服务器会用它来识别消息的来源。
         // max.poll.records:用于控制单次调用 call （） 方住能够返回的记录数量
         //receive.buffer.bytes和send.buffer.bytes：指定了 TCP socket 接收和发送数据包的缓冲区大小，默认值为-1
+
         KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<String, String>(properties);
-        kafkaConsumer.subscribe(Arrays.asList("flink_test"));
+        kafkaConsumer.subscribe(Arrays.asList("ttt"));
         while (true) {
             ConsumerRecords<String, String> records = kafkaConsumer.poll(100);
             for (ConsumerRecord<String, String> record : records) {

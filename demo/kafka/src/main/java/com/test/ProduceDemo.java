@@ -11,7 +11,7 @@ public class ProduceDemo {
     public static void main(String[] args) {
         Properties properties = new Properties();
         //broker的地址清单，建议至少填写两个，避免宕机
-        properties.put("bootstrap.servers", "http://192.168.40.129:9092");
+        properties.put("bootstrap.servers", "http://172.16.1.41:9092");
         //acks指定必须有多少个分区副本接收消息，生产者才认为消息写入成功，用户检测数据丢失的可能性
         //acks=0：生产者在成功写入消息之前不会等待任何来自服务器的响应。无法监控数据是否发送成功，但可以以网络能够支持的最大速度发送消息，达到很高的吞吐量。
         //acks=1：只要集群的首领节点收到消息，生产者就会收到来自服务器的成功响应。
@@ -42,7 +42,7 @@ public class ProduceDemo {
             producer = new KafkaProducer<String, String>(properties);
             for (int i = 0; i < 10; i++) {
                 String msg = "生产者发送消息1111";
-                producer.send(new ProducerRecord<String, String>("flink_test", msg));
+                producer.send(new ProducerRecord<String, String>("test009", msg));
                 Thread.sleep(500);
                 System.out.println("Sent:" + msg);
             }

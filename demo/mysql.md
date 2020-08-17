@@ -48,3 +48,17 @@
 重启端口服务 service iptables restart
 ```
 
+
+### mysql架构
+客户端
+
+连接器
+
+缓存器
+
+分析器
+
+优化器
+
+
+

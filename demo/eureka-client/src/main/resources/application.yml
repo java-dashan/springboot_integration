@@ -3,13 +3,15 @@
 spring:
   application:
     name: eureka-client
+#  cloud:
+#    discovery:
+#      enabled: false  #禁用client客户端
 eureka:
   instance:
 #    ip-address: http://127.0.0.1:8001
     instance-id: eureka-client${server.port}
     prefer-ip-address: true
     home-page-url: /
-
   client:
     fetch-registry: true
     service-url:

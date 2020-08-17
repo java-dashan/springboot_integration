@@ -31,6 +31,9 @@ public class HelloController {
     @Autowired
     LoadBalancerClient balancerClient;
 
+//    @Autowired  //错误
+//    com.netflix.discovery.DiscoveryClient discoveryClient1;
+
     @Autowired
     EurekaClient eurekaClient;
 

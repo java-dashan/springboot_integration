@@ -14,9 +14,15 @@ public class ProduceContoller {
     @Autowired
     private KafkaTemplate<String,Object> kafkaTemplate;
 
-    @GetMapping("/send")
-    public String send(TestEntity entity) {
-        kafkaTemplate.send("json", entity.toString());
+//    @GetMapping("/send")
+//    public String send(TestEntity entity) {
+//        kafkaTemplate.send("json", entity.toString());
+//        return "success";
+//    }
+
+    @GetMapping("/send1")
+    public String send1(TestEntity entity) {
+        kafkaTemplate.send("object", entity.toString());
         return "success";
     }
 }
