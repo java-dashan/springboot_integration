@@ -31,4 +31,14 @@ public class TestConsumer {
             System.out.println("consumer1消费消息" + o);
         }
     }
+
+    @KafkaListener(topics = {"test009"})
+    public void consumer2(ConsumerRecord consumerRecord) {
+        Optional<Object> value = Optional.ofNullable(consumerRecord.value());
+        log.info("consumer2接收到消息");
+        if (value.isPresent()) {
+            Object o = value.get();
+            System.out.println("consumer1消费消息" + o);
+        }
+    }
 }

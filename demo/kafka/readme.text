@@ -28,7 +28,10 @@ win10 ubuntu本地目录:C:\Users\hez\AppData\Local\Packages\CanonicalGroupLimit
 参考文章:https://www.cnblogs.com/expiator/p/9990171.html
 修改config/server.properties
 listeners=PLAINTEXT://0.0.0.0:9092
+listeners=PLAINTEXT://:9092
 advertised.listeners=PLAINTEXT://kafka本机ip:9092
+//如果是docker,这个主要用来注册到zookeeper,是外界访问地址
+advertised.listeners=PLAINTEXT://宿主机ip:9092
 
 1.启动zookerper
   启动zk有两种方式，第一种是使用kafka自己带的一个zk。
