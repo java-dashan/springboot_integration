@@ -32,6 +32,24 @@
     Filter -> DispatcherServlet -> HandlerIntercept -> Aspect -> Controller  
 
 
+7.ID过长,前端报错to long:
+    @JsonSerialize(using = ToStringSerializer.class) //使用自带工具类
+	private Long id;
+	
+	public class MyLongConverter extends JsonSerializer<Long> {
+    @Override
+    public void serialize(Long value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
+        if (value.toString().length() > 12) {
+        gen.writeString(value.toString());
+        log.info("the Long value is to long. will convert to String");
+        } else {
+        gen.writeNumber(value);
+        }
+    }
+    }
+    @JsonSerialize(using = MyLongConverter.class) //使用自定义
+    private Long id;
+
 
 
 

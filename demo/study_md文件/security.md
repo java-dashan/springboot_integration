@@ -4,6 +4,9 @@
 
 ## 一.spring security
 
+时序图:
+https://www.cnblogs.com/mxmbk/p/9952298.html
+
 问:
 
 1.  spring security是如何注入spring容器?
