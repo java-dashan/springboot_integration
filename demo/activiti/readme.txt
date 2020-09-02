@@ -21,4 +21,8 @@ public class MyListener implements TaskListener {
     }
 }
 
-bpmn图可以使用 Activiti-app 开源程序进行绘制
+@SpringBootApplication(exclude = {LiquibaseAutoConfiguration.class,
+        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
+        SecurityAutoConfiguration.class})
+
+bpmn图可以使用 Activiti-app / Activiti modeler 开源程序进行绘制
