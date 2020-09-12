@@ -58,7 +58,7 @@
         <dependency>
             <groupId>org.activiti</groupId>
             <artifactId>activiti-spring-boot-starter-basic</artifactId>
-            <version>${activiti.version}</version> 
+            <version>${activiti.version}</version>
         </dependency>
 
 		<!-- Activity6 集成 Modeler 需要 jar 包 -->
@@ -74,24 +74,24 @@
 		     </exclusions>
     	</dependency>
 	    <dependency>
-		    <groupId>org.apache.xmlgraphics</groupId> 
-		    <artifactId>batik-codec</artifactId> 
-		    <version>${apache.xmlgraphics.version}</version> 
-	    </dependency> 
-	    <dependency> 
-		    <groupId>org.apache.xmlgraphics</groupId> 
-		    <artifactId>batik-css</artifactId> 
-		    <version>${apache.xmlgraphics.version}</version> 
-	    </dependency> 
-	    <dependency> 
-		    <groupId>org.apache.xmlgraphics</groupId> 
-		    <artifactId>batik-svg-dom</artifactId> 
-		    <version>${apache.xmlgraphics.version}</version> 
-	    </dependency> 
-	    <dependency> 
-		    <groupId>org.apache.xmlgraphics</groupId> 
-		    <artifactId>batik-svggen</artifactId> 
-		    <version>${apache.xmlgraphics.version}</version> 
+		    <groupId>org.apache.xmlgraphics</groupId>
+		    <artifactId>batik-codec</artifactId>
+		    <version>${apache.xmlgraphics.version}</version>
+	    </dependency>
+	    <dependency>
+		    <groupId>org.apache.xmlgraphics</groupId>
+		    <artifactId>batik-css</artifactId>
+		    <version>${apache.xmlgraphics.version}</version>
+	    </dependency>
+	    <dependency>
+		    <groupId>org.apache.xmlgraphics</groupId>
+		    <artifactId>batik-svg-dom</artifactId>
+		    <version>${apache.xmlgraphics.version}</version>
+	    </dependency>
+	    <dependency>
+		    <groupId>org.apache.xmlgraphics</groupId>
+		    <artifactId>batik-svggen</artifactId>
+		    <version>${apache.xmlgraphics.version}</version>
 	    </dependency>
 		<!--lombok-->
 		<dependency>

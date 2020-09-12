@@ -18,9 +18,9 @@ public class UserController {
         return ehcacheService.findByUsername(username);
     }
 
-    @GetMapping("/")
-    public String get(){
-        return "hello";
-    }
+//    @GetMapping("/")
+//    public String get(){
+//        return "hello";
+//    }
 
 }

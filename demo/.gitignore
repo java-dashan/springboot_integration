@@ -29,3 +29,4 @@ build/
 
 ### VS Code ###
 .vscode/
+!/Activiti6-modeler-demo/pom.xml
