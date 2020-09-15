@@ -658,6 +658,14 @@ POST /_bulk
 {"name":"j","age":17,"likes":["bangqiu"]}
 {"update":{"_index":"test1","_id":2}}
 {"doc":{"name":"test b"}}
+
+PUT /filedata/_bulk?pipeline=attachment&pretty=true
+{"index":{}}
+{"_id":"10","filename":"小yao","fileext":"txt","filepath":"d:/tempfile", "data":"5oiR5piv5L2g54i454i4DQoNCg0K5L2g5Zyo5ZOqDQoNCg0K54i454i45oOz5L2g5LqGDQo="}
+{"index":{}}
+{"_id":"11","filename":"小hei","fileext":"txt","filepath":"d:/tempfile", "data":"5LiJ5aSp5LiN5omT5LiK5oi/5o+t55OmIOS9oOivtOeahOWvueS4jeWvuQ=="}
+{"index":{}}
+{"_id":"12","filename":"小bai","fileext":"txt","filepath":"d:/tempfile","data":"5Lit5Y2O5Lq65ZCN5YWx5ZKM5Zu9IOaIkeeahOelluWbvQ=="}
 ```
 
 ### 8.deep paging原理
@@ -750,6 +758,47 @@ PUT /index/_mapping/type
     }
 }
 ```
+
+#### 时间类型的映射
+
+```json
+#给example索引新增一个birthday字段，类型为date, 格式可以是yyyy-MM-dd 或 yyyy-MM-dd HH:mm:ss
+#添加日期类型的映射
+PUT test_label_supplier/docs/_mapping
+{
+  "properties": {
+    "birthday": {
+      "type": "date",
+      "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis",
+      "ignore_malformed": false,
+      "null_value": null
+    }
+  }
+}
+
+//时间范围查询
+GET /filedata/_search
+{
+  "query":{
+        "range":{
+            "birthday":{
+                "lt":"2020-09-18 08:17:39",
+                "gte":"2020-09-10 08:17:39"
+            }
+        }
+    }
+}
+```
+
+```java
+// 数据格式转换，并加上8小时进行存储
+@JsonFormat(shape = JsonFormat.Shape.OBJECT, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+// 指定存储格式
+@Field(type = FieldType.Date,format = DateFormat.custom,pattern = "yyyy-MM-dd HH:mm:ss")
+private Date birthday;
+```
+
+
 
 ### 10.问题及解决方案
 
@@ -1429,9 +1478,167 @@ NativeSearchQuery native = NativeSearchQueryBuilder.withQuery(QueryBuilder1).wit
 
 
 
+### 15.安装插件（ 安装完需重启各节点 ）
+
+方式一: 在线安装  
+
+```
+sudo ./bin/elasticsearch-plugin install ingest-attachment
+```
+
+方式二：离线安装
+
+ 先下载离线安装文件：[https://artifacts.elastic.co/downloads/elasticsearch-plugins/ingest-attachment/ingest-attachment-7.1.1.zip.](https://artifacts.elastic.co/downloads/elasticsearch-plugins/ingest-attachment/ingest-attachment-7.1.1.zip) ，然后执行安装： 
+
+```
+sudo ./elasticsearch-plugin install file:///home/michael/ingest-attachment-7.1.1.zip 
+```
 
 
 
+### 16.Ingest-Attachment插件使用
+
+#### 1.1 使用
+
+```json
+PUT _ingest/pipeline/simple_attachment//simple_attachment为管道名字
+{
+  "description": "单文件管道流",//备注
+  "processors": [
+    {
+      "attachment": {
+        "field": "data",//需要解析的数据key
+        "properties": [//将文档解析出content内容title标题content_type类型
+          "content",
+          "title",
+          "content_type"
+        ],
+        "ignore_missing": true//是否忽略fieId不存在的情况
+      }
+    },{
+     "remove":{"field":"data"}
+    }
+  ]
+}
+
+//创建存储文档的索引
+POST file_index_test/_doc
+{
+  "mappings": {
+    "info": {
+      "properties": {
+        "id": {
+          "type": "keyword"
+        },
+        "filename": {
+          "type": "text",
+          "analyzer": "jieba_index"
+        },
+        "attachment": {
+          "properties": {
+            "content": {
+              "type": "text",
+              "analyzer": "jieba_index"
+            },
+            "content_type": {
+              "type": "text",
+              "analyzer": "jieba_index"
+            },
+            "title": {
+              "type": "text",
+              "analyzer": "jieba_index"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+//输入
+PUT file_index_test/_doc/1?pipeline=simple_attachment//simple_attachment为管道名字
+{
+  "id": "1",
+  "filename": "测试附件",
+  "data": ""//放入文件的base64码
+}
+
+//查询
+GET /file_index_test/_doc/_search
+```
+
+#### 1.2 给文档分词
+
+```json
+PUT _ingest/pipeline/attachment
+{
+  "description": "Extract attachment information",
+    "processors": [
+      {
+        "attachment": {
+          "field": "data",
+          "indexed_chars": -1,
+          "ignore_missing": true
+        }
+      },
+      {
+        "remove": {
+          "field": "data"
+        }
+      }
+    ]
+}
+
+PUT /filedata
+ 
+{
+  "mappings": {
+    "properties": {
+      "filename": {
+        "type": "text",
+          "analyzer": "ik_max_word"
+      },
+      "fileext": {
+        "type": "keyword"
+      },
+      "filepath": {
+        "type": "keyword"
+      },
+      "attachment.data": {
+        "type": "text",
+          "analyzer": "ik_max_word"
+      }
+    }
+  }
+}
+
+
+
+PUT /filedata/_bulk?pipeline=attachment&pretty=true
+{"index":{}}
+{"filename":"小月","fileext":"txt","filepath":"d:/tempfile", "data":"5oiR5piv5L2g54i454i4DQoNCg0K5L2g5Zyo5ZOqDQoNCg0K54i454i45oOz5L2g5LqGDQo="}
+{"filename":"小黑","fileext":"txt","filepath":"d:/tempfile", "data":"5LiJ5aSp5LiN5omT5LiK5oi/5o+t55OmIOS9oOivtOeahOWvueS4jeWvuQ=="}
+{"index":{}}
+{"filename":"小白","fileext":"txt","filepath":"d:/tempfile","data":"5Lit5Y2O5Lq65ZCN5YWx5ZKM5Zu9IOaIkeeahOelluWbvQ=="}
+
+
+GET /filedata/_search
+{
+  "query": {
+    "term": {
+      "filename": {
+        "value": "小"
+      }
+    }
+  },
+  "highlight": {
+    "fragment_size": 40,
+      "fields": {
+      "filename": { }
+    }
+  }
+}
+```
 
 
 

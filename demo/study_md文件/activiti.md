@@ -51,3 +51,13 @@ Activiti中的流程和状态Task均可关联相关的业务数据，通过FormS
 ManagementService提供对流程引擎的管理和维护的功能，这些功能不在工作流驱动的应用程序中使用，主要运用activiti的日常维护。
 
 
+ ```yaml
+  
+springboot的application.yml配置activiti邮件服务：
+spring:
+   activiti:
+     mail-server-host: smtpdm.tenxun.com #邮件服务器的主机名，默认为localhost
+     mail-server-port: 22 #邮件服务器上SMTP通信的端口。默认值为25
+     mail-server-user-name: test@wang.survey.com #发信地址
+     mail-server-password: 123456
+ ```
