@@ -8,6 +8,8 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
+import java.util.Date;
+
 public class CostumHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 
     private static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
@@ -35,5 +37,7 @@ public class CostumHandler extends SimpleChannelInboundHandler<TextWebSocketFram
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
         String text = msg.text();
+        System.out.println(text);
+        ctx.writeAndFlush(new TextWebSocketFrame("我是服务器,我收到你的消息为:" + "hah " + new Date()));
     }
 }
