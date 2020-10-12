@@ -22,41 +22,102 @@ public interface UserService{
 
 - 服务提供方
 
+```yaml
+# dubbo扫描路径
+dubbo.scan.base-packages=com.huazhi.service
+
+dubbo.protocol.id=dubbo
+dubbo.protocol.name=dubbo
+dubbo.application.name=dubbo-server
+
+dubbo.protocol.port=-1
+dubbo.registry.address=nacos://192.168.139.131:8848
+```
+
+```pom
+<dependencies>
+        <dependency>
+            <groupId>com.huazhi</groupId>
+            <artifactId>dubbo-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+        </dependency>
+</dependencies>
+```
+
 ```java
-//引入 dubbo,接口项目,starter-web,zookerper,mysql,mybatis依赖
-//开启dubbo @EnableDubboConfiguration
-//配置dubbo spring 依赖
-@Component
-@Service(version = "1.0.0", timeout = 10000) //dubbo注解
-public class UserServiceImpl implement UserService{
-    @Autowired
-    private UserMapper userMapper;
-    
-    public String sayHi(String name){
-        return "hello,"+ name;
+@EnableDiscoveryClient
+@SpringBootApplication
+public class DubboServerApp {
+    public static void main(String[] args) {
+
+        SpringApplication.run(DubboServerApp.class, args);
     }
-    public User getUser(Integer id){
-        userMapper.selectByPrimaryKey(id);
+}
+
+@DubboService(protocol = "dubbo")
+public class ISayServiceImpl implements ISayService {
+    @Override
+    public String sayHello() {
+        return "第一个接口";
     }
 }
 ```
 
 - 服务消费方
 
+```pom
+<dependencies>
+        <dependency>
+            <groupId>com.huazhi</groupId>
+            <artifactId>dubbo-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+            <version>2.7.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.nacos</groupId>
+            <artifactId>nacos-client</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+</dependencies>
+```
+
+```yaml
+dubbo.application.name=dubbo-consumer
+spring.application.name=dubbo-client
+dubbo.registry.address=nacos://192.168.139.131:8848
+```
+
 ```java
-//引入 dubbo,接口项目,starter-web,zookerper依赖
-//配置dubbo spring 依赖
-//开启dubbo @EnableDubboConfiguration
 @RestController
-public class UserController{
-    @Reference(version="1.0.0")
-    private UserService userService;
-    
-    @GetMapping("/user")
-    public User getUser(Integer id){
-        return userService.getUser(id);
+@SpringBootApplication
+public class DubboConsumerApp {
+    public static void main(String[] args) {
+        SpringApplication.run(DubboConsumerApp.class, args);
+    }
+
+    @DubboReference(protocol = "dubbo")
+    ISayService iSayService;
+
+    @GetMapping("/say")
+    public String say() {
+        return iSayService.sayHello();
     }
 }
-
 ```
 

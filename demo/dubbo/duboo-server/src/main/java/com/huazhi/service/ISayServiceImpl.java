@@ -7,8 +7,6 @@ import org.apache.dubbo.config.annotation.DubboService;
 public class ISayServiceImpl implements ISayService {
     @Override
     public String sayHello() {
-
-
         return "第一个接口";
     }
 }

@@ -19,6 +19,7 @@
         <module>dubbo-client</module>
         <module>duboo-server</module>
         <module>dubbo-api</module>
+        <module>nio-study</module>
     </modules>
 
     <properties>

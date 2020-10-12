@@ -294,6 +294,16 @@ GET best_games/_search
 
 ```json
 DELETE /index/type/1
+
+//删除符合条件的文档
+POST /index/_delete_by_query   
+{
+    "query":{
+        "match":{
+            "field":"text"
+        }
+    }
+}
 ```
 
 ### 4._version, ___source, ___cat?v,  _indeies, routing,consistency
