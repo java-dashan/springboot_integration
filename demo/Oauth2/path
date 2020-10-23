@@ -1,0 +1,10 @@
+
+
+获取授权码
+http://localhost:8080/oauth/authorize?client_id=client&client_secret=123456&response_type=code
+
+获取token
+http://localhost:8080/oauth/token?client_id=client&client_secret=123456&grant_type==authorization_code&code=A2japo
+
+检查token
+http://localhost:8080/oauth/check_token?token=fa2d540c-9dd7-4720-a40f-f58ccb71123f

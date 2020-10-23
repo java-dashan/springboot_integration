@@ -20,6 +20,8 @@
         <module>es</module>
         <module>utils</module>
         <module>dubbo</module>
+        <module>java_</module>
+        <module>Oauth2</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

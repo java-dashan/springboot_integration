@@ -18,3 +18,14 @@ mybatis:
 #      defaultZone: http://localhost:10086/eureka/
 server:
   port: 9001
+
+logging:
+  file:
+    path: C:\Users\da\Desktop\aaa
+  level:
+    root: info #日志级别 root表示所有包，也可以单独配置具体包 fatal error warn info debug trace off
+#
+#
+##logging:
+##  config: classpath:logback-spring.xml
+
