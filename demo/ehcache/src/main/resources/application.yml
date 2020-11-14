@@ -18,7 +18,6 @@ mybatis:
 #      defaultZone: http://localhost:10086/eureka/
 server:
   port: 9001
-
 logging:
   file:
     path: C:\Users\da\Desktop\aaa

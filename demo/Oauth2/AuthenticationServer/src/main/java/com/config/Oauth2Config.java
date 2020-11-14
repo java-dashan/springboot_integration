@@ -5,8 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.token.DefaultToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -25,22 +23,27 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 @Configuration
 public class Oauth2Config extends AuthorizationServerConfigurerAdapter {
 
+//    token生成策略
     @Autowired
     private TokenStore tokenStore;
 
+//    client 客户端信息服务类
     @Autowired
     private ClientDetailsService clientDetailsService;
 
+//    授权码服务类
     @Autowired
     private AuthorizationCodeServices authorizationCodeServices;
 
+//    身份信息管理类
     @Autowired
     private AuthenticationManager authenticationManager;
 
+//    密码加密器
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
+//    配置认证服务
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.tokenKeyAccess("permitAll()")
@@ -66,6 +69,7 @@ public class Oauth2Config extends AuthorizationServerConfigurerAdapter {
         ;
     }
 
+//    配置认证服务端点
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager) //security认证管理器

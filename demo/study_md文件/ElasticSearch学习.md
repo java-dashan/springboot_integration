@@ -1,4 +1,42 @@
-# 						ElasticSearch学习
+# ElasticSearch学习
+
+## docker 安装 Es
+
+```
+docker pull registry.cn-hangzhou.aliyuncs.com/vanni/elasticsearch:7.6.2-ik-pinyin
+
+docker tag registry.cn-hangzhou.aliyuncs.com/vanni/elasticsearch:7.6.2-ik-pinyin elasticsearch:7.6.2
+
+docker rmi registry.cn-hangzhou.aliyuncs.com/vanni/elasticsearch:7.6.2-ik-pinyin
+
+ mkdir -p /mydata/elasticsearch/config
+ 
+ mkdir -p /mydata/elasticsearch/data
+ 
+ echo "http.host: 0.0.0.0" >> /mydata/elasticsearch/config/elasticsearch.yml
+ 
+chmod 777 /mydata/elasticsearch/config
+chmod 777 /mydata/elasticsearch/data
+chmod 777 /mydata/elasticsearch/config/elasticsearch.yml
+
+ 
+ docker run --name elasticsearch -p 9200:9200 -p 9300:9300  -e "discovery.type=single-node" -e ES_JAVA_OPTS="-Xms64m -Xmx128m" -v /mydata/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml -v /mydata/elasticsearch/data:/usr/share/elasticsearch/data -v /mydata/elasticsearch/plugins:/usr/share/elasticsearch/plugins -d elasticsearch:7.6.2
+ 
+ docker pull kibana:7.6.2
+docker run --name kibana -d -p 5601:5601 --link elasticsearch -e "ELASTICSEARCH_URL=http://192.168.139.132:9200" kibana:7.6.2
+
+
+unzip elasticsearch-analysis-ik-7.6.2.zip -d ik
+rm elasticsearch-analysis-ik-7.6.2.zip
+```
+
+
+
+
+
+
+
+
 
 ### 1.索引(index)
 
@@ -1652,11 +1690,37 @@ GET /filedata/_search
 
 
 
+### 脚本
+
+,1. "lang": "expression"
+
+```javascript
+//参数field必须为  numic date geopoint(地质点)
 
 
+GET /knowledge2/_search
+{
+    "query" : {
+        "script_score" : {
+            "query" : {
+                "match_all": { }
+            },
+            "script" : {
+                "source":"doc['filed'].value * 10"
+            }
+        }
+     }
+}
+```
 
+​                
 
+2. "lang":"painless"
 
+```javascript
+// 默认
+"source" : "doc['remark'].getLength()*10 "
+```
 
 
 

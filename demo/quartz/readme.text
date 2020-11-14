@@ -1,1 +1,15 @@
 实现 QuartzJobBean接口 定义工作
+
+Quartz默认保存在内存里面，如需保存在数据库 需要配置 quartz.properties 数据库信息
+
+五个重要的组件：
+
+Job  任务
+
+JobDetail  任务包装类/增加一些信息
+
+Trigger  触发器
+
+Scheduler  调度器
+
+Listen{ job,trigger,scheduler }  监听器
