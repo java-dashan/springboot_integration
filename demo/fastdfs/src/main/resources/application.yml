@@ -1,0 +1,10 @@
+fdfs:
+  connect-timeout: 30  #连接超时时间
+  tracker-list: 192.168.139.131:22122
+  so-timeout: 30 #读取超时时间
+spring:
+  application:
+    name: fdfs-test
+
+server:
+  port: 8080

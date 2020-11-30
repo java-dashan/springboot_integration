@@ -22,6 +22,7 @@
         <module>dubbo</module>
         <module>java_</module>
         <module>Oauth2</module>
+        <module>fastdfs</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

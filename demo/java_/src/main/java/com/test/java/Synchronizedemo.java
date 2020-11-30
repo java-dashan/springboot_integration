@@ -1,8 +1,8 @@
 package com.test.java;
 
 public class Synchronizedemo {
-
     synchronized static void test() {
+        System.out.println("进入");
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -12,12 +12,27 @@ public class Synchronizedemo {
     }
 
     synchronized void test1() {
-        System.out.println(222);
+        System.out.println("进入1");
+        while (!Thread.currentThread().isInterrupted()) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+//                Thread.currentThread().interrupt();
+            }
+            System.out.println(222);
+        }
     }
 
     public static void main(String[] args) {
         Synchronizedemo synchronizedemo = new Synchronizedemo();
-        new Thread(() -> Synchronizedemo.test()).start();
-        new Thread(() -> synchronizedemo.test1()).start();
+        Thread thread = new Thread(() -> synchronizedemo.test1());
+        thread.start();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        thread.interrupt();
     }
 }
