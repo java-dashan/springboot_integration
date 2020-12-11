@@ -1,0 +1,16 @@
+elastic:
+  job:
+    serverLists: 139.9.191.25:2181
+    namespace: test
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://8.129.97.26:3306/kiqi?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+
+logging:
+  level:
+    root: debug
