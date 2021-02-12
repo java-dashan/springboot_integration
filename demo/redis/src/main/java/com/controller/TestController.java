@@ -57,10 +57,12 @@ public class TestController {
 
     @GetMapping("/redissonLock")
     public String redissonLock() {
+        log.info("进入了方法");
+
         RLock lock = redisson.getLock("redissonLock");
         try {
-            lock.lock(10, TimeUnit.SECONDS);
-            Thread.sleep(15000);
+            lock.lock(30, TimeUnit.SECONDS);
+            Thread.sleep(10000);
             System.out.println("我是你大哥");
         } catch (InterruptedException e) {
             e.printStackTrace();
