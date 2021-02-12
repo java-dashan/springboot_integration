@@ -1,11 +1,8 @@
 package com.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
-import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +29,7 @@ public class TestController {
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
+            log.info("释放锁");
             try {
                 lock.release();
             } catch (Exception e) {
