@@ -4,7 +4,6 @@
     <modelVersion>4.0.0</modelVersion>
     <modules>
         <module>regist</module>
-        <module>rabbit</module>
         <module>ehcache</module>
         <module>redis</module>
         <module>activiti</module>

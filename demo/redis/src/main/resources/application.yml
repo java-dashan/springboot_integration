@@ -19,11 +19,11 @@ spring:
       enabled: true  #设置开启热部署
 #  freemarker:
 #    cache: false    #页面不加载缓存，修改即时生效
-eureka:
-  instance:
-    instance-id: redis-7001
-    prefer-ip-address: true
-  client:
-    service-url:
-      defaultZone: http://localhost:10086/eureka/
+#eureka:
+#  instance:
+#    instance-id: redis-7001
+#    prefer-ip-address: true
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:10086/eureka/
 
