@@ -22,6 +22,7 @@
         <module>Oauth2</module>
         <module>fastdfs</module>
         <module>job</module>
+        <module>sharding-jdbc-demo</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

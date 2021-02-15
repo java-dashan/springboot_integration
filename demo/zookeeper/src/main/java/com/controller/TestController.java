@@ -29,7 +29,8 @@ public class TestController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        }
+        finally {
             log.info("释放锁");
             try {
                 lock.release();
