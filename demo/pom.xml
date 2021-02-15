@@ -23,6 +23,7 @@
         <module>fastdfs</module>
         <module>job</module>
         <module>sharding-jdbc-demo</module>
+        <module>rate-limiter</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
