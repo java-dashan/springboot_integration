@@ -3,7 +3,9 @@ spring:
     name: regist
 eureka:
   client:
+    # 单机不需要拉取注册信息
     fetch-registry: false
+    # 单机不需要注册自己
     registerWithEureka: false
 server:
   port: 10086
