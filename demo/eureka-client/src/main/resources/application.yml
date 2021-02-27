@@ -8,12 +8,16 @@ spring:
 #      enabled: false  #禁用client客户端
 eureka:
   instance:
-#    ip-address: http://127.0.0.1:8001
-    instance-id: eureka-client${server.port}
-    prefer-ip-address: true
-    home-page-url: /
+##  每隔30秒，向服务中心发送一条续约指令
+#    lease-renewal-interval-in-seconds: 30
+##  如果60秒内，依然没有收到续约请求，判定服务过期（过期不一定剔除，还有服务自保限制）
+#    lease-expiration-duration-in-seconds: 60
+  ##    ip-address: http://127.0.0.1:8001
+#    instance-id: eureka-client${server.port}
+#    prefer-ip-address: true
+#    home-page-url: /
   client:
-    fetch-registry: true
+#    fetch-registry: true
     service-url:
       defaultZone: http://localhost:10086/eureka
 #management:

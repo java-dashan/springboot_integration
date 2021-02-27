@@ -7,5 +7,10 @@ eureka:
     fetch-registry: false
     # 单机不需要注册自己
     registerWithEureka: false
+#  server:
+#    # 强制关闭 服务自保（默认为true, 服务自保会自动打开或关闭，根据规则：如单位时间85%以下成功率）
+#    enable-self-preservation: false
+#    # 每隔多久触发一次服务剔除
+#    eviction-interval-timer-in-ms: 30
 server:
   port: 10086

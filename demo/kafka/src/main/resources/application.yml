@@ -1,6 +1,7 @@
 spring:
   kafka:
-    bootstrap-servers:  172.16.1.41:9091,172.16.1.41:9092,172.16.1.41:9093 #指定kafka server的地址，集群配多个，中间，逗号隔开  192.168.40.129:9092 172.16.1.41:9092
+#  指定kafka server的地址，集群配多个，中间，逗号隔开  192.168.40.129:9092 172.16.1.41:9092
+    bootstrap-servers:  192.168.139.101:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer

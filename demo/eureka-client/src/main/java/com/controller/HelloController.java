@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.cloud.netflix.eureka.EurekaDiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -37,8 +39,11 @@ public class HelloController {
     @Autowired
     EurekaClient eurekaClient;
 
-//    @Autowired
+    @Autowired
+    EurekaDiscoveryClient eurekaDiscoveryClient;
 
+    @Autowired
+    RestTemplate restTemplate;
 
     @GetMapping("/discover")
     public String discover() {
@@ -46,15 +51,22 @@ public class HelloController {
         services.forEach(s ->System.out.println(s));
         List<ServiceInstance> instances = discoveryClient.getInstances("eureka-client");//服务实例
         instances.forEach(instance -> {
-//            System.out.println(instance.getHost());
-//            System.out.println(instance.getMetadata());
-//            System.out.println(instance.getUri());
-//            System.out.println(instance.getInstanceId());
+            System.out.println(instance.getHost());
+            System.out.println(instance.getMetadata());
+            System.out.println(instance.getUri());
+            System.out.println(instance.getInstanceId());
             System.out.println(instance);
         });
 
-//        baseLoadBalancer.
+        ServiceInstance choose = balancerClient.choose("eureka-client");
 
-        return "ok";
+        String targetUrl = String.format("http://%s:%s/hi", choose.getHost(), choose.getPort());
+
+        return restTemplate.getForObject(targetUrl, String.class);
+    }
+
+    @GetMapping("/hi")
+    public String get() {
+        return "hi eureka-client";
     }
 }
