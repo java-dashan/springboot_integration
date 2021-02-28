@@ -38,3 +38,36 @@ eureka:
 #  #请使用 POST请求
 #  management.endpoint.shutdown.enabled = true
 
+
+# ribbon全局配置
+ribbon:
+  ConnectTimeout: 1000
+  ReadTimeout: 3000
+
+# 指定服务配置，优先级大于全局配置
+eureka-client:
+  ribbon:
+    ConnectTimeout: 1000
+    ReadTimeout: 3000
+    MaxAutoRetries: 1
+    MaxAutoRetriesNextServer: 2
+    # 允许所有http操作(get post put delete 等)重试
+    OkToRetryOnAllOperations: true
+
+
+# feign 超时配置大于ribbon 也就是覆盖ribbon
+feign:
+  client:
+    config:
+      # 全局
+      default:
+        connectTimeout: 1000
+        readTimeout: 3000
+      # 指定eureka-client
+      eureka-client:
+        ConnectTimeout: 1000
+        ReadTimeout: 3000
+        MaxAutoRetries: 1
+        MaxAutoRetriesNextServer: 2
+        # 允许所有http操作(get post put delete 等)重试
+        OkToRetryOnAllOperations: true
