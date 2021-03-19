@@ -1,14 +1,16 @@
 package com;
 
 
+import com.google.common.collect.Lists;
 import com.util.RedisUtil;
 import com.util.SpringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
@@ -16,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RedisApplication.class)
+@Slf4j
 public class Test {
     
     @Autowired
@@ -113,6 +116,68 @@ public class Test {
         }
         Long a1 = redisTemplate.getExpire("a", TimeUnit.SECONDS);
         System.out.println(a1);
+    }
+
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
+    @org.junit.Test
+    public void testSet() {
+        redisUtil.sSet("set", "aaa", "bbb", "ccc");
+        System.out.println(redisUtil.sGet("set"));
+        System.out.println(redisUtil.isExistSet("set", "aaa"));
+        redisUtil.sRemove("set", "aaa");
+        System.out.println(redisUtil.isExistSet("set", "aaa"));
+
+        //        1.executePipelined 重写 入参 RedisCallback 的doInRedis方法
+        List<Object> resultList = stringRedisTemplate.executePipelined(new RedisCallback<Object>() {
+
+            @Override
+            public String doInRedis(RedisConnection connection) throws DataAccessException {
+//                2.connection 打开管道
+                connection.openPipeline();
+
+//                3.connection 给本次管道内添加 要一次性执行的多条命令
+
+//                3.1 一个set操作
+                byte[] key1 = "mykey1".getBytes();
+                byte[] value1 = "字符串value".getBytes();
+                connection.set(key1,value1);
+
+//                3.2一个批量mset操作
+                Map<byte[],byte[]> tuple = new HashMap<>();
+                tuple.put("m_mykey1".getBytes(),"m_value1".getBytes());
+                tuple.put("m_mykey2".getBytes(),"m_value2".getBytes());
+                tuple.put("m_mykey3".getBytes(),"m_value3".getBytes());
+                connection.mSet(tuple);
+
+//                 3.3一个get操作
+                connection.get("m_mykey1".getBytes());
+                connection.get("m_mykey2".getBytes());
+                connection.get("m_mykey3".getBytes());
+
+                connection.sAdd("mmm".getBytes(), "m".getBytes(), "mm".getBytes(), "mmm".getBytes());
+                connection.sMembers("mmm".getBytes());
+
+//                4.关闭管道 不需要close 否则拿不到返回值
+//                connection.closePipeline();
+
+//                这里一定要返回null，最终pipeline的执行结果，才会返回给最外层
+                return null;
+            }
+        });
+        log.info("{}",resultList);
+    }
+
+    @org.junit.Test
+    public void testSadd() {
+        ArrayList<String> objects = Lists.newArrayList();
+        objects.add("a");
+        objects.add("b");
+        objects.add("c");
+        objects.add("c");
+        redisUtil.sSet("list1", objects.toArray());
+        System.out.println(redisUtil.sGet("list1"));
+        System.out.println(redisUtil.isExistSet("list1", "a"));
     }
 
 }

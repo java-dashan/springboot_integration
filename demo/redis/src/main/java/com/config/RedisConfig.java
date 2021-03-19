@@ -17,6 +17,10 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig extends CachingConfigurerSupport {
 
     @Bean
+    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory factory){
+        return new StringRedisTemplate(factory);
+    }
+    @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
         RedisTemplate redisTemplate = new RedisTemplate();
         //配置连接工厂
@@ -97,5 +101,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     public ZSetOperations<String, Object> zSetOperations(RedisTemplate<String, Object> redisTemplate) {
         return redisTemplate.opsForZSet();
     }
+
+
 
 }

@@ -3,6 +3,9 @@
 spring:
   application:
     name: eureka-client
+#    允许覆盖bean
+  main:
+    allow-bean-definition-overriding: true
 #  cloud:
 #    discovery:
 #      enabled: false  #禁用client客户端
@@ -71,3 +74,38 @@ feign:
         MaxAutoRetriesNextServer: 2
         # 允许所有http操作(get post put delete 等)重试
         OkToRetryOnAllOperations: true
+# 开启 feign hystrix
+  hystrix:
+    enabled: true
+
+hystrix:
+  command:
+#    default 为全局配置
+    default:
+      fallback:
+#        默认就是true  false强制关闭
+        enabled: true
+#        全局超时配置
+      execution:
+        isolation:
+          thread:
+#            超时时间
+            timeoutInMilliseconds: 2000
+#            超时后终止线程
+            interruptOnTimeout: true
+#            取消时终止线程
+            interruptOnFutureCancel: true
+        timeout:
+          enabled: true
+#          指定方法过期时间   方法签名生成规则 Feign.configKey(Test.class,Test.class.getMethod("test",int.class))
+    Test#test(int):
+        fallback:
+          enabled: true
+        execution:
+          isolation:
+            thread:
+              timeoutInMilliseconds: 2000
+              interruptOnTimeout: true
+              interruptOnFutureCancel: true
+          timeout:
+            enabled: true
