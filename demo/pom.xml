@@ -25,6 +25,7 @@
         <module>sharding-jdbc-demo</module>
         <module>rate-limiter</module>
         <module>redis-lua</module>
+        <module>api</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
